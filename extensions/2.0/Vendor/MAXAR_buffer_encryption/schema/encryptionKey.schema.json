@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "encryptionKey.schema.json",
+  "title": "Encryption Key",
+  "allOf": [
+    {
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "type": "object",
+  "description": "Information about the secret encryption key used to encrypt buffer data.",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:/#=+@;,%\\-~]{16,256}$",
+      "description": "A unique identifier for the encryption key. The value must uniquely identify the key within the system. The key ID should be generated to guarantee uniqueness (for example, using a UUID, a random string, a systematically generated id with namespace context, or a cryptographic hash of the key material). It must never contain the key itself or any reversible encoding of the key."
+    },
+    "data": {
+      "type": "string",
+      "description": "The secret key encrypted by the user key. When decrypted, this key is used to decrypt buffer data. Standard Base64 (RFC 4648 §4); padding is mandatory when needed.",
+      "contentEncoding": "base64"
+    },
+    "algorithm": {
+      "description": "The algorithm used to encrypt the secret key.",
+      "anyOf": [
+        {
+          "const": "AES-256-GCM"
+        },
+        {
+          "const": "AES-128-GCM"
+        },
+        {
+          "const": "RSA-OAEP-SHA256-2048"
+        },
+        {
+          "const": "RSA-OAEP-SHA256-3072"
+        },
+        {
+          "const": "RSA-OAEP-SHA256-4096"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "iv": {
+      "type": "string",
+      "description": "The initialization vector used for encryption of the secret key. Required for encryption methods like AES-GCM. Should be 12 bytes. Standard Base64 (RFC 4648 §4); padding is mandatory when needed.",
+      "contentEncoding": "base64"
+    },
+    "authTag": {
+      "type": "string",
+      "description": "The authentication tag for verification of the encrypted secret key. Provides integrity verification to encryption modes like AES-GCM. Should be 16 bytes. Standard Base64 (RFC 4648 §4); padding is mandatory when needed.",
+      "contentEncoding": "base64"
+    }
+  },
+  "required": ["id", "data", "algorithm"],
+  "if": {
+    "properties": {
+      "algorithm": {
+        "enum": ["AES-256-GCM", "AES-128-GCM"]
+      }
+    }
+  },
+  "then": {
+    "required": ["id", "data", "algorithm", "iv", "authTag"]
+  },
+  "else": {
+    "required": ["id", "data", "algorithm"]
+  }
+}
+

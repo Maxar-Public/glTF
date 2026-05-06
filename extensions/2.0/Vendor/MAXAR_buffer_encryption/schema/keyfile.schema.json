@@ -1,0 +1,25 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "keyfile.schema.json",
+    "title": "Encryption Key File",
+    "allOf": [
+        {
+            "$ref": "glTFProperty.schema.json"
+        }
+    ],
+    "description": "Schema for the encryption key file used with MAXAR_buffer_encryption extension.",
+    "type": "object",
+    "properties": {
+        "keys": {
+            "type": "array",
+            "description": "Array of encryption keys available in this keyfile.",
+            "items": {
+                "$ref": "keyItem.schema.json"
+            },
+            "minItems": 1
+        }
+    },
+    "required": [
+        "keys"
+    ]
+}

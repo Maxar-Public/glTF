@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "buffer.MAXAR_buffer_encryption.schema.json",
+  "title": "MAXAR_buffer_encryption buffer extension",
+  "type": "object",
+  "description": "glTF extension to Buffer for specifying the encryption of the buffer.",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "keyfile": {
+      "type": "string",
+      "description": "Optional URI (or IRI) of the external key file for this buffer. If not specified, the application is responsible for providing the key information through other means. DataURIs are not allowed.",
+      "format": "iri-reference",
+      "pattern": "^(?!data:).*"
+    },
+    "keyId": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:/#=+@;,%\\-~]{16,256}$",
+      "description": "A unique identifier for the encryption key used for this buffer. This must match a keyId defined in the external keyfile. The key ID should be generated to guarantee uniqueness (for example, using a UUID, a random string, a systematically generated id with namespace context, or a cryptographic hash of the key material). It must never contain the key itself or any reversible encoding of the key. Only one key is allowed per buffer; if multiple different keys are desired, multiple buffers must be employed."
+    },
+    "algorithm": {
+      "description": "The algorithm used to encrypt the buffer data for this keyId.",
+      "anyOf": [
+        {
+          "const": "AES-256-GCM"
+        },
+        {
+          "const": "AES-128-GCM"
+        },
+        {
+          "type": "string"
+        }
+      ]
+    },
+    "ranges": {
+      "type": "array",
+      "description": "Array of encrypted ranges within the buffer. Each range specifies a portion of the buffer that is encrypted. Ranges must not overlap within a buffer.",
+      "items": {
+        "$ref": "encryptedRange.schema.json"
+      },
+      "minItems": 1
+    }
+  },
+  "required": ["keyId", "algorithm", "ranges"]
+}

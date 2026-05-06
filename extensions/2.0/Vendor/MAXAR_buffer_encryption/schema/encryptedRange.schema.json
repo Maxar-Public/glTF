@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "encryptedRange.schema.json",
+  "title": "Encrypted Range",
+  "type": "object",
+  "description": "Specifies a portion of a buffer that is encrypted.",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "byteOffset": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The offset into the buffer in bytes where this encrypted range starts."
+    },
+    "byteLength": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "The length in bytes of this encrypted range. The sum of byteOffset and byteLength must not exceed the buffer's byteLength."
+    },
+    "iv": {
+      "type": "string",
+      "description": "The initialization vector used for encryption of this range. Should be 12 bytes. Standard Base64 (RFC 4648 §4); padding is mandatory when needed.",
+      "contentEncoding": "base64"
+    },
+    "authTag": {
+      "type": "string",
+      "description": "The authentication tag for this encrypted range. Provides integrity verification of the encrypted data. Should be 16 bytes. Standard Base64 (RFC 4648 §4); padding is mandatory when needed.",
+      "contentEncoding": "base64"
+    }
+  },
+  "required": ["byteOffset", "byteLength", "iv", "authTag"]
+}
+

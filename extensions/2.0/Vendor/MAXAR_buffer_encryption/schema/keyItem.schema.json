@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "keyItem.schema.json",
+  "title": "Key Item",
+  "allOf": [
+    {
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "type": "object",
+  "description": "A key item containing user key and encryption key information.",
+  "properties": {
+    "userKey": {
+      "$ref": "userKey.schema.json"
+    },
+    "encryptionKey": {
+      "$ref": "encryptionKey.schema.json"
+    }
+  },
+  "required": [
+    "userKey",
+    "encryptionKey"
+  ]
+}
+

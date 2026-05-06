@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "userKey.schema.json",
+  "title": "User Key",
+  "allOf": [
+    {
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "type": "object",
+  "description": "Information about the user key used to encrypt the secret key. The user key itself is not stored in the dataset and must be managed separately by the viewing application.",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "A human readable name for the user key."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 16,
+      "maxLength": 256,
+      "pattern": "^[A-Za-z0-9._:/#=+@;,%\\-~]{16,256}$",
+      "description": "A unique identifier for a cryptographic key. The value must uniquely identify the key within the system. The key ID should be generated to guarantee uniqueness (for example, using a UUID, a random string, a systematically generated id with namespace context, or a cryptographic hash of the key material). It must never contain the key itself or any reversible encoding of the key."
+    }
+  },
+  "required": ["name", "id"]
+}
+
