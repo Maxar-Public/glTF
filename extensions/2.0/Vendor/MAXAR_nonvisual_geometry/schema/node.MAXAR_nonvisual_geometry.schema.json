@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "node.MAXAR_nonvisual_geometry.schema.json",
+  "title": "MAXAR_nonvisual_geometry node extension",
+  "type": "object",
+  "description": "Nonvisual representations of a mesh.",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "mesh": {
+      "allOf": [{
+          "$ref": "glTFid.schema.json"
+        }
+      ],
+      "description": "The index of the mesh to use as a nonvisual representation."
+    }
+  },
+  "required": [
+    "mesh"
+  ]
+}

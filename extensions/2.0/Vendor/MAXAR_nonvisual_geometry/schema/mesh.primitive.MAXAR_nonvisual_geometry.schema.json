@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mesh.primitive.MAXAR_nonvisual_geometry.schema.json",
+  "title": "MAXAR_nonvisual_geometry mesh primitive extension",
+  "type": "object",
+  "description": "Extension that defines the shape and semantic type of nonvisual mesh primitives.",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "shape": {
+      "type": "string",
+      "enum": ["points", "path", "surface", "volume"],
+      "description": "The shape of the nonvisual geometry specified in the primitive."
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "A string that specifies the semantic purpose of this nonvisual mesh primitive. Applications may define custom values, though well-known values are recommended."
+    }
+  },
+  "required": [
+    "shape",
+    "type"
+  ]
+}
