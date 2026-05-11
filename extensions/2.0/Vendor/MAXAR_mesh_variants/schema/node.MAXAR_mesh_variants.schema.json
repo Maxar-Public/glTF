@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "MAXAR_mesh_variants node extension",
     "type": "object",
     "allOf": [
@@ -10,7 +10,7 @@
     "properties": {
         "mappings": {
             "type": "array",
-            "description": "A list of mesh to variant mappings",
+            "description": "Array of mesh to variant mappings. Each mapping defines which mesh should be used for specific variants.",
             "items": {
                 "type": "object",
                 "allOf": [
@@ -22,15 +22,17 @@
                     "variants": {
                         "uniqueItems": true,
                         "type": "array",
-                        "description": "An array of variant index values.",
+                        "description": "Array of variant index values that this mesh mapping applies to. Each index must reference a valid variant in the root extension.",
                         "items": {
                             "allOf": [
                                 {
                                     "$ref": "glTFid.schema.json"
                                 }
-                            ]
+                            ],
+                            "minimum": 0
                         },
-                        "minItems": 1
+                        "minItems": 1,
+                        "maxItems": 256
                     },
                     "mesh": {
                         "allOf": [
@@ -38,24 +40,24 @@
                                 "$ref": "glTFid.schema.json"
                             }
                         ],
-                        "description": "The mesh associated with the set of variants."
+                        "minimum": 0,
+                        "description": "The index of the mesh in the glTF meshes array that should be used for the specified variants."
                     },
                     "name": {
                         "type": "string",
-                        "description": "The user-defined name of this variant mesh mapping."
-                    },
-                    "extras": {},
-                    "extensions": {}
+                        "minLength": 1,
+                        "maxLength": 256,
+                        "description": "Optional user-defined name for this variant mesh mapping. Should be descriptive of the mapping purpose."
+                    }
                 },
                 "required": [
                     "variants",
                     "mesh"
                 ]
             },
-            "minItems": 1
-        },
-        "extensions": {},
-        "extras": {}
+            "minItems": 1,
+            "maxItems": 256
+        }
     },
     "required": [
         "mappings"

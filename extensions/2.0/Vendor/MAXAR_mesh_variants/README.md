@@ -4,35 +4,55 @@
 
 * Erik Dahlström, Maxar, [@erikdahlstrom](https://github.com/erikdahlstrom)
 * Sam Suhag, Cesium, [@sanjeetsuhag](https://github.com/sanjeetsuhag)
+* Björn Blissing, Maxar [@bjornblissing](https://github.com/bjornblissing)
 
 ## Status
 
-Draft
+**Version 1.0.0**, November 4, 2025
 
 ## Dependencies
 
 Written against the glTF 2.0 spec.
 
+## Contents
+
+- [Overview](#overview)
+- [Variants](#variants)
+- [Mappings](#mappings)
+- [Validation and Constraints](#validation-and-constraints)
+- [Example](#example)
+- [Optional vs. Required](#optional-vs-required)
+- [glTF Schema Updates](#gltf-schema-updates)
+
 ## Overview
 
-This extension allows for a compact glTF representation of multiple mesh variants of an asset.
+This extension provides a compact representation for multiple mesh variants of an asset in glTF.
 
 ## Variants
 
 For a glTF asset, a mesh `variant` represents a combination of meshes that are selected for rendering by a set of nodes based on _mappings_.
 
-All available _variants_ are defined at the glTF root object extension as an array of objects, each with a _name_ property.
+All available _variants_ are defined in the glTF root extension as an array of objects, each with a _name_ property.
 
-The _default_ property represents the index of the variant that is selected by default. The meshes that are mapped to the default variant must represent the set of meshes initially selected by the nodes for rendering, as per vanilla glTF behavior.
+The _default_ property is the index of the variant selected by default. The meshes mapped to the default must match the meshes initially selected by nodes for rendering, per vanilla glTF behavior.
 
 ## Mappings
 
-For a given node, each entry in the mappings array represents a mesh that should be selected for rendering when one of its variants is active. Each entry in the mappings array is an object that specifies a mesh by its index in the root level `meshes` array and and array of variants, each by their respective indices in the root level `variants` array.
+For a given node, each entry in the mappings array represents a mesh that should be selected for rendering when one of its variants is active. Each entry in the mappings array is an object that specifies a mesh by its index in the root level `meshes` array and an array of variants, each by their respective indices in the root level `variants` array.
 
 A variant may only be used once across all the entries in the mappings array.
 
 When the active variant is referenced in a mapping, a compliant viewer will select its meshes for
 rendering. Application-specific logic may allow the activation of different variants per-node, enabling different runtime configurations of the model.
+
+## Validation and Constraints
+
+This extension includes comprehensive validation to ensure data integrity:
+
+- **String Validation**: Variant and mapping names must be non-empty (minLength: 1) and reasonably sized (maxLength: 256)
+- **Index Validation**: All indices must be non-negative integers (minimum: 0)
+- **Array Limits**: Arrays are limited to reasonable sizes (maxItems: 256) to prevent performance issues
+- **Unique Constraints**: Variant indices in mappings must be unique within each mapping
 
 ## Example
 
@@ -48,7 +68,7 @@ The following example illustrates the representation of a car model with varying
 
 At the root level, this will be described as follows:
 
-```javascript
+```json
 {
   "asset": {"version": "2.0"},
   "extensions": {
@@ -66,7 +86,7 @@ At the root level, this will be described as follows:
 
 For the purposes of illustration, let's consider that the model consists of 3 nodes - body, wheels and lights.
 
-```javascript
+```json
 "nodes": [
   {
     "name": "Car Body",
@@ -137,7 +157,7 @@ For the purposes of illustration, let's consider that the model consists of 3 no
 
 This extension is considered optional, meaning it should be placed in the glTF root's `extensionsUsed` list, but not in the `extensionsRequired` list.
 
-## Schema Updates
+## glTF Schema Updates
 
-- **glTF extension JSON schema**: [MAXAR_mesh_variants.schema.json](./schema/glTF.MAXAR_mesh_variants.schema.json)
+- **glTF extension JSON schema**: [glTF.MAXAR_mesh_variants.schema.json](./schema/glTF.MAXAR_mesh_variants.schema.json)
 - **glTF node extension JSON schema**: [node.MAXAR_mesh_variants.schema.json](./schema/node.MAXAR_mesh_variants.schema.json)
