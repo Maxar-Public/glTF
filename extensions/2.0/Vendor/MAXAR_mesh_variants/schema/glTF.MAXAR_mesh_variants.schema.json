@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "MAXAR_mesh_variants glTF extension",
     "type": "object",
     "description": "glTF extension that defines mesh variants for nodes",
@@ -15,6 +15,7 @@
                     "$ref": "glTFid.schema.json"
                 }
             ],
+            "minimum": 0,
             "description": "The index of the variant to load by default. The meshes that are mapped to the default variant must represent the set of meshes initially selected by the nodes for rendering, as per vanilla glTF behavior."
         },
         "variants": {
@@ -30,19 +31,19 @@
                 "properties": {
                     "name": {
                         "type": "string",
-                        "description": "The name of the mesh variant"
-                    },
-                    "extras": {},
-                    "extensions": {}
+                        "minLength": 1,
+                        "maxLength": 256,
+                        "description": "The name of the mesh variant. Should be a human-readable identifier for the variant."
+                    }
                 },
                 "required": [
                     "name"
                 ]
             },
-            "minItems": 1
-        },
-        "extensions": {},
-        "extras": {}
+            "minItems": 1,
+            "maxItems": 256,
+            "description": "Array of available mesh variants. Each variant represents a different configuration of meshes that can be selected for rendering."
+        }
     },
     "required": [
         "variants",
