@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "light.MAXAR_temporal_light_traits.schema.json",
+  "title": "MAXAR_temporal_light_traits light extension",
+  "type": "object",
+  "description": "glTF extension to KHR_lights_punctual for specifying the temporal traits for individual lights",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "flashing": {
+      "type": "object",
+      "description": "The flashing trait describes a simple flashing pattern that can be characterized by a waveform type and frequency. This trait modulates the light's intensity over time according to the specified parameters.",
+      "properties": {
+        "amplitudeOffset": {
+          "type": "number",
+          "description": "Offset amplitude from default range of (0.0, 1.0). This value is added to the waveform output after scaling.",
+          "default": 0.0
+        },
+        "amplitudeScale": {
+          "type": "number",
+          "description": "Scale amplitude from default range of (0.0, 1.0). The waveform output is multiplied by this value before adding the offset.",
+          "minimum": 0.0,
+          "default": 1.0
+        },
+        "duty": {
+          "type": "number",
+          "description": "Portion of period the light is on as normalized value [0.0, 1.0]. Only applicable for square waveforms. A value of 0.5 creates equal on/off periods, while 0.25 creates short pulses.",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 0.5
+        },
+        "frequency": {
+          "type": "number",
+          "description": "Frequency of the waveform in Hertz (Hz). Must be a positive value. Higher frequencies create faster flashing patterns.",
+          "exclusiveMinimum": 0.0
+        },
+        "phaseOffset": {
+          "type": "number",
+          "description": "Phase offset in seconds. This shifts the waveform in time, allowing multiple lights to flash in synchronized or offset patterns.",
+          "default": 0.0
+        },
+        "waveform": {
+          "type": "string",
+          "description": "Shape of the waveform that defines the flashing pattern.",
+          "enum": ["sine", "square", "triangle"]
+        }
+      },
+      "required": ["waveform", "frequency"],
+      "if": {
+        "properties": {
+          "waveform": {
+            "const": "square"
+          }
+        }
+      },
+      "then": {},
+      "else": {
+        "not": {
+          "required": ["duty"]
+        }
+      }
+    }
+  }
+}
