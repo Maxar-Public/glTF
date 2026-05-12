@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image.MAXAR_image_ortho.schema.json",
+  "title": "MAXAR_image_ortho image extension",
+  "type": "object",
+  "description": "glTF extension that allows specifying an image as being orthographically projected",
+  "allOf": [{
+      "$ref": "glTFProperty.schema.json"
+    }
+  ],
+  "properties": {
+    "transform": {
+      "type": "array",
+      "description": "2x3 affine transformation matrix for converting from pixel coordinates to world coordinates. Matrix elements are stored as [a, b, c, d, e, f] representing the transformation matrix [[a, c, e], [b, d, f]]. All six values must be finite JSON numbers; null, NaN, Infinity, and -Infinity are not allowed.",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 6,
+      "maxItems": 6,
+      "default": [1.0, 0.0, 0.0, 1.0, 0.0, 0.0]
+    },
+    "srs": {
+      "description": "The spatial reference system",
+      "allOf": [
+        { "$ref": "srs.MAXAR_image_ortho.schema.json" }
+      ]
+    }
+  },
+  "required": ["srs"]
+}
